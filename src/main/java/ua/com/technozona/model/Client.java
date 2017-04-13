@@ -3,6 +3,7 @@ package ua.com.technozona.model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ua.com.technozona.enums.RoleEnum;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -38,7 +39,8 @@ public class Client extends Model implements UserDetails {
     @Column(name = "google")
     private String google;
 
-    private  Role role;
+    @Transient
+    private final RoleEnum role = RoleEnum.CLIENT;
 
     @OneToMany(
             fetch = FetchType.LAZY,
@@ -46,29 +48,27 @@ public class Client extends Model implements UserDetails {
             cascade = CascadeType.REMOVE
     )
     private List<Order> clientOrders = new ArrayList<>();
-
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            mappedBy = "manager",
-            cascade = CascadeType.REMOVE
-    )
-    private List<Order> managerOrders = new ArrayList<>();
+//
+//    @OneToMany(
+//            fetch = FetchType.LAZY,
+//            mappedBy = "manager",
+//            cascade = CascadeType.REMOVE
+//    )
+//    private List<Order> managerOrders = new ArrayList<>();
 
     public Client() {
-        this("", "", "", null);
+        this("", "", "");
     }
 
     public Client(
             final String name,
             final String email,
-            final String phone,
-            final Role role
+            final String phone
     ) {
         super();
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.role = role;
         this.password = "";
         this.vkontakte = "";
         this.facebook = "";
@@ -78,7 +78,6 @@ public class Client extends Model implements UserDetails {
     @Override
     public String toString() {
         return "Name: " + this.name
-                + "\nRole: " + this.role.getDescription()
                 + "\nEmail: " + this.email
                 + "\nPhone: " + this.phone;
     }
@@ -155,11 +154,7 @@ public class Client extends Model implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         final List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(
-                new SimpleGrantedAuthority(
-                        "ROLE_" + this.role.getTitle().name()
-                )
-        );
+        roles.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
         return roles;
     }
 
@@ -170,8 +165,7 @@ public class Client extends Model implements UserDetails {
             final String phone,
             final String vkontakte,
             final String facebook,
-            final String google,
-            final Role role
+            final String google
     ) {
         setName(name);
         setPassword(password);
@@ -180,7 +174,6 @@ public class Client extends Model implements UserDetails {
         setVkontakte(vkontakte);
         setFacebook(facebook);
         setGoogle(google);
-        setRole(role);
     }
 
     /**
@@ -259,14 +252,6 @@ public class Client extends Model implements UserDetails {
         this.google = isNotBlank(google) ? google : "";
     }
 
-    public Role getRole() {
-        return this.role;
-    }
-
-    public void setRole(final Role role) {
-        this.role = role;
-    }
-
     /**
      * Конвертирует список заказов, которые оформил
      * текущий клиент, в список только для чтений и возвращает его.
@@ -274,30 +259,30 @@ public class Client extends Model implements UserDetails {
      * @return Объект типа {@link List} - список заказов только для чтения
      * или пустой список.
      */
-    public List<Order> getClientOrders() {
-        return getUnmodifiableList(this.clientOrders);
-    }
-
-    /**
-     * Устанавливает список заказов, которые оформил текущий клиент.
-     */
-    public void setClientOrders(final List<Order> clientOrders) {
-        this.clientOrders = clientOrders;
-    }
-
-    /**
-     * Конвертирует список заказов, которые обработал текущий менеджер,
-     * в список только для чтений и возвращает его.
-     */
-    public List<Order> getManagerOrders() {
-        return getUnmodifiableList(this.managerOrders);
-    }
-
-    /**
-     * Устанавливает список заказов, которые обработал текущий менеджер.
-     */
-    public void setManagerOrders(final List<Order> managerOrders) {
-        this.managerOrders = managerOrders;
-    }
+//    public List<Order> getClientOrders() {
+//        return getUnmodifiableList(this.clientOrders);
+//    }
+//
+//    /**
+//     * Устанавливает список заказов, которые оформил текущий клиент.
+//     */
+//    public void setClientOrders(final List<Order> clientOrders) {
+//        this.clientOrders = clientOrders;
+//    }
+//
+//    /**
+//     * Конвертирует список заказов, которые обработал текущий менеджер,
+//     * в список только для чтений и возвращает его.
+//     */
+//    public List<Order> getManagerOrders() {
+//        return getUnmodifiableList(this.managerOrders);
+//    }
+//
+//    /**
+//     * Устанавливает список заказов, которые обработал текущий менеджер.
+//     */
+//    public void setManagerOrders(final List<Order> managerOrders) {
+//        this.managerOrders = managerOrders;
+//    }
 }
 

@@ -1,10 +1,14 @@
 package ua.com.technozona.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 
 @Entity
 @Table(name = "products")
@@ -12,26 +16,6 @@ public final class Product extends Model {
 
     private static final long serialVersionUID = 1L;
 
-    private static final char[] CODE_PATTERN = "1234567890".toCharArray();
-
-    private static final int CODE_LENGTH = 5;
-
-    /**
-     * Артикль товара.
-     * Значение поля сохраняется в колонке "article".
-     * Не может быть null.
-     */
-    @Column(
-            name = "article",
-            nullable = false
-    )
-    private int article;
-
-    /**
-     * Название товара.
-     * Значение поля сохраняется в колонке "title".
-     * Не может быть null.
-     */
     @Column(
             name = "title",
             nullable = false
@@ -57,6 +41,12 @@ public final class Product extends Model {
     )
     private Category category;
 
+    @Column(
+            name = "price",
+            nullable = false
+    )
+    private double price;
+
     @OneToOne(
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
@@ -65,30 +55,13 @@ public final class Product extends Model {
             name = "photo_id",
             referencedColumnName = "id"
     )
+    @JsonBackReference
     private Photo photo;
 
-    @Column(
-            name = "price",
-            nullable = false
-    )
-    private double price;
 
-    /**
-     * Изображение товара.
-     * К текущему товару можно добраться через поле "product" в объекте
-     * класса {@link SalePosition}. Выборка объекта salePosition при первом
-     * доступе к нему. Сущность salePosition автоматически удаляется
-     * при удалении текущей.
-     */
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            mappedBy = "product",
-            cascade = CascadeType.REMOVE
-    )
-    private List<SalePosition> salePositions = new ArrayList<>();
 
     public Product() {
-        this("", "", null, null, 0.0);
+        this("", "", null,null, 0.0);
     }
 
     public Product(
@@ -106,8 +79,8 @@ public final class Product extends Model {
         this.price = price;
         this.parameters = "";
         this.description = "";
-        newArticle();
     }
+
 
     @Override
     public String toString() {
@@ -127,17 +100,9 @@ public final class Product extends Model {
         return sb.toString();
     }
 
-    /**
-     * Генерирует строку для конечного сравнения товаров в методе equals()
-     * родительского класса. Переопределенный метод родительского
-     * класса {@link Model}.
-     *
-     * @return Значение типа {@link String} - название + URL + цена товара.
-     */
     @Override
-    public String toEquals() {
-        return getArticle() + getTitle() + getUrl() + getPrice();
-    }
+    public String toEquals(){return getTitle() + getUrl() + getPrice();}
+
 
     public void initialize(
             final String title,
@@ -157,106 +122,54 @@ public final class Product extends Model {
         setPrice(price);
     }
 
-    /**
-     * Генерирует новый артикль товара.
-     */
-    public void newArticle() {
-        this.article = Integer.parseInt(
-                createRandomString(CODE_PATTERN, CODE_LENGTH)
-        );
+    public void initialize(
+            final String title,
+            final String url,
+            final String parameters,
+            final String description,
+            final Category category,
+            final double price
+    ) {
+        setTitle(title);
+        setUrl(url);
+        setParameters(parameters);
+        setDescription(description);
+        setCategory(category);
+        setPrice(price);
     }
 
-    /**
-     * Возвращает артикль товара.
-     *
-     * @return Значение типа int - артикль товара.
-     */
-    public int getArticle() {
-        return this.article;
-    }
 
-    /**
-     * Устанавливает артикль товара.
-     *
-     * @param article Артикль товара.
-     */
-    public void setArticle(final int article) {
-        this.article = article;
-    }
 
-    /**
-     * Возвращает название товара.
-     *
-     * @return Значение типа {@link String} - название товара.
-     */
     public String getTitle() {
         return this.title;
     }
 
-    /**
-     * Устанавливает название товара.
-     *
-     * @param title Название товара.
-     */
     public void setTitle(final String title) {
         this.title = isNotBlank(title) ? title : "";
     }
 
-    /**
-     * Возвращает URL товара.
-     *
-     * @return Значение типа {@link String} - URL товара.
-     */
     public String getUrl() {
         return this.url;
     }
 
-    /**
-     * Устанавливает URL товара.
-     *
-     * @param url URL товара.
-     */
     public void setUrl(final String url) {
         this.url = isNotBlank(url) ? url : "";
     }
 
-    /**
-     * Возвращает параметры товара.
-     *
-     * @return Значение типа {@link String} - параметры товара.
-     */
     public String getParameters() {
         return this.parameters;
     }
 
-    /**
-     * Устанавливает параметры товара.
-     *
-     * @param parameters Параметры товара.
-     */
     public void setParameters(final String parameters) {
         this.parameters = isNotBlank(parameters) ? parameters : "";
     }
 
-    /**
-     * Возвращает описание товара.
-     *
-     * @return Значение типа {@link String} - описание товара.
-     */
     public String getDescription() {
         return this.description;
     }
 
     public void setDescription(final String description) {
         this.description = isNotBlank(description) ? description : "";
-    }
-
-    public Photo getPhoto() {
-        return this.photo;
-    }
-
-    public void setPhoto(final Photo photo) {
-        this.photo = photo;
     }
 
     public Category getCategory() {
@@ -275,21 +188,11 @@ public final class Product extends Model {
         this.price = price > 0 ? price : 0;
     }
 
-    /**
-     * Возвращает список торговых позиций, для которых пренадлежит текущий товара.
-     *
-     * @return Объект класса {@link SalePosition} - торговая позиция.
-     */
-    public List<SalePosition> getSalePositions() {
-        return this.salePositions;
+    public Photo getPhoto() {
+        return photo;
     }
 
-    /**
-     * Устанавливает список торговых позиций, для которых пренадлежит текущий товара.
-     *
-     * @param salePositions Торговая позиция.
-     */
-    public void setSalePositions(final List<SalePosition> salePositions) {
-        this.salePositions = salePositions;
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
     }
 }

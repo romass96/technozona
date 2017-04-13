@@ -2,27 +2,15 @@ package ua.com.technozona.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpRequest;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import ua.com.technozona.enums.RoleEnum;
-import ua.com.technozona.model.Role;
-import ua.com.technozona.model.User;
+import ua.com.technozona.model.Client;
+import ua.com.technozona.model.Employee;
 import ua.com.technozona.service.interfaces.CategoryService;
-import ua.com.technozona.service.interfaces.RoleService;
-import ua.com.technozona.service.interfaces.UserService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import ua.com.technozona.service.interfaces.ClientService;
 
 @Controller
 @ComponentScan(basePackages = {
@@ -32,16 +20,17 @@ import javax.servlet.http.HttpServletResponse;
 public class HomeController {
 
     @Autowired
-    UserService userService;
-    @Autowired
-    RoleService roleService;
+    ClientService clientService;
+
     @Autowired
     CategoryService categoryService;
 
+
+
     @RequestMapping(value = "/")
     public ModelAndView home(){
-        ModelAndView model = new ModelAndView("main");
-        model.addObject("user",getPrincipal());
+        ModelAndView model = new ModelAndView("shop");
+        model.addObject("user","roma");
         model.addObject("categories",categoryService.getAll());
         return model;
     }
@@ -50,31 +39,34 @@ public class HomeController {
     public ModelAndView login()
     {
         ModelAndView model = new ModelAndView("login");
-        model.addObject("userForm", new User());
+        model.addObject("clientForm", new Client());
         return model;
     }
 
 
     @RequestMapping(value = "/registerClient")
-    public String registerClient(@ModelAttribute("userForm") User userForm){
-        userForm.setRole(roleService.getDefault());
-        userService.add(userForm);
-        System.out.println(userForm);
+    public String registerClient(@ModelAttribute("clientForm") Client clientForm){
+        clientService.add(clientForm);
         return "redirect:/login";
     }
 
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return "redirect:/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
-    }
+//    @RequestMapping(value="/logout", method = RequestMethod.GET)
+//    public String logout (HttpServletRequest request, HttpServletResponse response) {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if (auth != null){
+//            new SecurityContextLogoutHandler().logout(request, response, auth);
+//        }
+//        return "redirect:/login?logout";
+//    }
 
     private String getPrincipal(){
-        User principal = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return principal.getName();
+        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user instanceof Employee){
+//            new HttpStatusReturningLogoutSuccessHandler(HttpStatus.ACCEPTED);
+        } else if (user instanceof Client){
+
+        }
+        return null;
     }
 
 }

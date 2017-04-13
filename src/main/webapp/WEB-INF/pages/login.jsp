@@ -7,9 +7,9 @@
     <meta charset="UTF-8">
     <title>Вход</title>
     <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Open+Sans:600'>
-    <link href="<c:url value="/resources/css/bootstrap-social.css"/>" rel="stylesheet">
-    <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet">
-    <link href="<c:url value="/resources/css/font-awesome.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/bootstrap/bootstrap-social.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/font-awesome/font-awesome.css"/>" rel="stylesheet">
     <link href="<c:url value="/resources/css/customStyle/login.css"/>" rel="stylesheet" />
 </head>
 
@@ -51,7 +51,7 @@
                 </form>
             </div>
             <div class="sign-up-htm">
-                <form:form method="post" modelAttribute="userForm"  enctype="UTF-8" action="/registerClient" >
+                <form:form method="post" modelAttribute="clientForm"  enctype="UTF-8" action="/registerClient" >
                     <spring:bind path="name">
                         <div class="group">
                             <label for="name_signup" class="label">Ваше имя</label>
@@ -108,7 +108,7 @@
 
 
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js"/>"></script>
-<script src="<c:url value="/resources/js/jquery.maskedinput.min.js"/>"></script>
+<script src="<c:url value="/resources/js/plugins/jQuery/jquery.maskedinput.min.js"/>"></script>
 <script src="<c:url value="/resources/js/login.js"/>"></script>
 </body>
 </html>

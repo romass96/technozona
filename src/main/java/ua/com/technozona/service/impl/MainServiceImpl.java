@@ -1,5 +1,8 @@
 package ua.com.technozona.service.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.technozona.exception.BadRequestException;
 import ua.com.technozona.exception.WrongInformationException;
@@ -11,6 +14,8 @@ import ua.com.technozona.service.interfaces.MainService;
 import java.util.List;
 
 public abstract class MainServiceImpl<T extends Model> implements MainService<T> {
+
+    private static final int PAGE_SIZE=10;
 
     private final MainRepository<T,Long> mainRepository;
 
@@ -83,23 +88,13 @@ public abstract class MainServiceImpl<T extends Model> implements MainService<T>
         return this.mainRepository.findOne(id);
     }
 
-    /**
-     * Получение всех моделей из базы данных.
-     * Режим только для чтения.
-     *
-     * @return Объект типа {@link List} - список всех моделей.
-     */
     @Override
     @Transactional(readOnly = true)
     public List<T> getAll() {
         return this.mainRepository.findAll();
     }
 
-    /**
-     * Удаление модели из базы данных.
-     *
-     * @param model Модель для удаления.
-     */
+
     @Override
     @Transactional
     public void remove(final T model) {

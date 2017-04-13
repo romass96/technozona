@@ -1,11 +1,6 @@
 package ua.com.technozona.enums;
 
-/**
- * Перечесление вожможных статусов выполнения заказа.
- *
- * @author Yurii Salimov (yuriy.alex.salimov@gmail.com)
- * @version 1.2
- */
+
 public enum StatusEnum {
     /**
      * Новый заказ.
@@ -15,7 +10,7 @@ public enum StatusEnum {
     /**
      * Заказ в работу.
      */
-    WORK,
+    IN_PROCESSING,
 
     /**
      * Доставка заказа.

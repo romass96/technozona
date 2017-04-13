@@ -34,7 +34,7 @@
                     <div class="box box-solid box-success">
                         <div class="box-header">
                             <h2 class="box-title">
-                                Категории
+                                Сотрудники
                             </h2>
                         </div>
                         <!-- /.box-header -->
@@ -48,7 +48,7 @@
                                     <button type="button" id="updateButton" disabled onclick="showUpdateModal()" class="btn btn-default">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </button>
-                                    <button type="button" id="deleteButton" disabled onclick="deleteCategory()" class="btn btn-default">
+                                    <button type="button" id="deleteButton" disabled onclick="deleteEmployee()" class="btn btn-default">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                     <button type="button" id="refreshButton" onclick="refresh()" class="btn btn-default">
@@ -56,19 +56,22 @@
                                     </button>
                                 </div>
                             </div>
-                            <table class="table table-bordered table-striped table-hover" id="categoryList">
+                            <table class="table table-bordered table-hover" id="employeeList">
                                 <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Название категории</th>
-                                        <th>URL</th>
-                                    </tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Фамилия</th>
+                                    <th>Имя</th>
+                                    <th>Отчество</th>
+                                    <th>Статус</th>
+                                    <th>Email</th>
+                                    <th>Пароль</th>
+                                    <th>Телефон</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -76,28 +79,42 @@
         </section>
     </div>
 </div>
-
-<div class="modal fade" id="category" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+<div class="modal fade" id="employee" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="modalTitle">Добавление категории</h4>
+                <h4 class="modal-title" id="modalTitle">Добавление сотрудника</h4>
             </div>
             <div class="modal-body">
-                <label for="categoryName">Название категории</label>
-                <input id="categoryName" type="text" class="form-control">
-                <label for="categoryURL">URL категории</label>
-                <input id="categoryURL" type="text" class="form-control">
+                <label for="status">Статус</label>
+                <select id="status" class="form-control">
+                    <option>Менеджер</option>
+                    <option>Администратор</option>
+                </select>
+                <label for="firstName">Имя</label>
+                <input id="firstName" type="text" class="form-control">
+                <label for="lastName">Фамилия</label>
+                <input id="lastName" type="text" class="form-control">
+                <label for="patronymic">Отчество</label>
+                <input id="patronymic" type="text" class="form-control">
+                <label for="email">Email</label>
+                <input id="email" type="text" class="form-control">
+                <label for="password">Пароль</label>
+                <input id="password" type="text" class="form-control">
+                <label for="phone">Телефон</label>
+                <input id="phone" type="text" class="form-control">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <button id="addCategory" type="button" onclick="addCategory()" class="btn btn-primary">Добавить</button>
-                <button id="updateCategory" type="button" onclick="updateCategory()" class="btn btn-primary">Обновить</button>
+                <button id="addEmployee" type="button" onclick="addEmployee()" class="btn btn-primary">Добавить</button>
+                <button id="updateEmployee" type="button" onclick="updateEmployee()" class="btn btn-primary">Обновить</button>
             </div>
         </div>
     </div>
 </div>
+
+
 
 <script src="<c:url value="/resources/plugins/jQuery/jquery-3.2.0.min.js"/>"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
@@ -106,7 +123,9 @@
 <script src="<c:url value="/resources/plugins/datatables/dataTables.bootstrap.js"/>"></script>
 
 <script src="<c:url value="/resources/js/app.min.js"/>"></script>
-<script src="<c:url value="/resources/js/admin/categories.js"/>"></script>
+<script src="<c:url value="/resources/js/admin/employees.js"/>"></script>
+
+
 
 
 </body>

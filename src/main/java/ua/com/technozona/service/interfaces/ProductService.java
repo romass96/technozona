@@ -8,8 +8,6 @@ public interface ProductService extends MainService<Product> {
 
     Product getByUrl(String url);
 
-    Product getByArticle(int article);
-
     List<Product> getByCategoryUrl(String url);
 
     List<Product> getByCategoryId(Long id);
@@ -24,12 +22,10 @@ public interface ProductService extends MainService<Product> {
             int size, Long id
     );
 
-
     List<Product> getRandom(int size);
 
     void removeByUrl(String url);
 
-    void removeByArticle(int article);
 
     void removeByCategoryUrl(String url);
 

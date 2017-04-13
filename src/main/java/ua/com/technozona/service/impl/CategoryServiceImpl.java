@@ -18,6 +18,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 public final class CategoryServiceImpl extends MainServiceImpl<Category> implements CategoryService {
 
 
+
     private final CategoryRepository repository;
 
     @Autowired

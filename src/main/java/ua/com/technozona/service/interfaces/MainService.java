@@ -1,5 +1,6 @@
 package ua.com.technozona.service.interfaces;
 
+import org.springframework.data.domain.Page;
 import ua.com.technozona.model.Model;
 import ua.com.technozona.service.impl.MainServiceImpl;
 
@@ -16,6 +17,7 @@ public interface MainService<T extends Model> {
     T get(Long id);
 
     List<T> getAll();
+
 
     void remove(T model);
 

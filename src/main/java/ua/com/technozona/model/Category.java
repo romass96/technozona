@@ -1,5 +1,6 @@
 package ua.com.technozona.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -24,11 +25,13 @@ public final class Category extends Model {
     @Column(name = "description")
     private String description;
 
+
     @OneToMany(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             mappedBy = "category",
             cascade = CascadeType.ALL
     )
+    @JsonIgnore
     private List<Product> products = new ArrayList<>();
 
     public Category() {
@@ -94,7 +97,7 @@ public final class Category extends Model {
     }
 
     public List<Product> getProducts() {
-        return getUnmodifiableList(this.products);
+        return this.products;
     }
 
     public void setProducts(final List<Product> products) {

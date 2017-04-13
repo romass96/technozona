@@ -1,7 +1,12 @@
 package ua.com.technozona.model;
 
-/**
- * Created by Roma on 01.04.2017.
- */
-public class Admin {
+
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "admins")
+@PrimaryKeyJoinColumn(name = "admin_id", referencedColumnName = "id")
+public class Admin extends Employee {
 }

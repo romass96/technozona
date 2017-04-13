@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <title>Интернет-магазин TechnoZona</title>
-    <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet">
-    <link href="<c:url value="/resources/css/font-awesome.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css"/>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/font-awesome/font-awesome.css"/>" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -54,6 +54,6 @@
     </div><!-- /.container-fluid -->
 </nav>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+<script src="<c:url value="/resources/js/plugins/bootstrap/bootstrap.min.js"/>"></script>
 </body>
 </html>

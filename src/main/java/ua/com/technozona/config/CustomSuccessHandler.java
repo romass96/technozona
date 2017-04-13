@@ -47,8 +47,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
         if (isManager(roles)) {
             url = "/manager";
         } else if (isAdmin(roles)) {
-            url = "/admin";
-        } else if (isUser(roles)) {
+            url = "/admin/categories";
+        } else if (isClient(roles)) {
             url = "/";
         } else {
             url="/accessDenied";
@@ -64,7 +64,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
         return redirectStrategy;
     }
 
-    private boolean isUser(List<String> roles) {
+    private boolean isClient(List<String> roles) {
         if (roles.contains("ROLE_CLIENT")) {
             return true;
         }

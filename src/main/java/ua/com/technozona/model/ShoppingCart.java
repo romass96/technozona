@@ -10,18 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Класс описывает корзину товаров.
- * Реализует интерфейс Serializable, может быть сериализован.
- * Помечен аннотациями @Component указывает, что клас является
- * компонентом фреймворка Spring;
- * и @Scope - область видимости бина "session"
- * (один экземпляр бина для каждой сессии).
- *
- * @author Yurii Salimov (yuriy.alex.salimov@gmail.com)
- * @version 1.2
- * @see SalePosition
- */
 @Component
 @Scope(
         value = WebApplicationContext.SCOPE_SESSION,
@@ -29,55 +17,33 @@ import java.util.List;
 )
 public class ShoppingCart implements Serializable {
 
-    /**
-     * Номер версии класса необходимый для десериализации и сериализации.
-     */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Список торговых позиций,
-     * которые сделал клиент, но пока не оформил заказ.
-     */
-    private List<SalePosition> salePositions = new ArrayList<>();
+    private List<Sale> sales = new ArrayList<>();
 
-    /**
-     * Конструктр без параметров.
-     */
     public ShoppingCart() {
     }
 
-    /**
-     * Конструктор для инициализации основных переменных корзины.
-     *
-     * @param salePositions Торговые позиции, сделаные клиентом.
-     */
     public ShoppingCart(
-            final List<SalePosition> salePositions
+            final List<Sale> sales
     ) {
         this();
-        this.salePositions = salePositions;
+        this.sales = sales;
     }
 
-    /**
-     * Возвращает описание корзины.
-     * Переопределенный метод родительского класса {@link Object}.
-     *
-     * @return Значение типа {@link String} - строка описание корзины
-     * (информация о торговых позициях, цена корзины).
-     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Shopping Cart: ");
-        if (this.salePositions != null && !this.salePositions.isEmpty()) {
+        if (this.sales != null && !this.sales.isEmpty()) {
             int count = 1;
-            for (SalePosition salePosition : this.salePositions) {
+            for (Sale sale : this.sales) {
                 sb.append("\n")
                         .append(count++)
-                        .append(") ").append(salePosition.getProduct().getTitle())
+                        .append(") ").append(sale.getProduct().getTitle())
                         .append("\n№ ")
-                        .append(salePosition.getProduct().getId())
+                        .append(sale.getProduct().getId())
                         .append(", ")
-                        .append(salePosition.getPrice())
+                        .append(sale.getPrice())
                         .append(" UAH");
             }
             sb.append("\nPrice: ")
@@ -89,108 +55,60 @@ public class ShoppingCart implements Serializable {
         return sb.toString();
     }
 
-    /**
-     * Добавляет торговую позицию в список корзины.
-     *
-     * @param salePosition Торговая позиция, которая будет добавлена в корзину.
-     */
-    public void addSalePosition(final SalePosition salePosition) {
-        if (salePosition != null) {
-            if (!this.salePositions.contains(salePosition)) {
-                this.salePositions.add(salePosition);
+    public void addSale(final Sale sale) {
+        if (sale != null) {
+            if (!this.sales.contains(sale)) {
+                this.sales.add(sale);
             } else {
-                this.salePositions.get(
-                        this.salePositions.indexOf(salePosition)
+                this.sales.get(
+                        this.sales.indexOf(sale)
                 ).numberIncrement();
             }
         }
     }
 
-    /**
-     * Добавляет список торговых позиций в список корзины.
-     *
-     * @param salePositions Список торговых позиций,
-     *                      которые будут добавлены в корзину.
-     */
-    public void addSalePositions(
-            final List<SalePosition> salePositions
+    public void addSale(
+            final List<Sale> sales
     ) {
-        salePositions.forEach(this::addSalePosition);
+        sales.forEach(this::addSale);
     }
 
-    /**
-     * Удаляет торговую позицию из корзины.
-     *
-     * @param salePosition Торговая позиция для удаления из корзины.
-     */
-    public void removeSalePosition(final SalePosition salePosition) {
-        this.salePositions.remove(salePosition);
+    public void removeSale(final Sale sale) {
+        this.sales.remove(sale);
     }
 
-    /**
-     * Удаляет список торговых позицый из корзины.
-     *
-     * @param salePositions Торговые позиции для удаления из корзины.
-     */
-    public void removeSalePositions(
-            final List<SalePosition> salePositions
+    public void removeSales(
+            final List<Sale> sales
     ) {
-        this.salePositions.removeAll(salePositions);
+        this.sales.removeAll(sales);
     }
 
-    /**
-     * Очищает корзину.
-     * Удаляет все торговые позиции в корзине.
-     */
-    public void clearSalePositions() {
-        this.salePositions.clear();
+    public void clearSales() {
+        this.sales.clear();
     }
 
-    /**
-     * Возвращает список всех торговых позиций в корзине.
-     * Метод конвертирует список торговых позиций
-     * в корзине в список только для чтений и возвращает его.
-     *
-     * @return Объект типа {@link List} - список торговых позиций только
-     * для чтения или пустой список.
-     */
-    public List<SalePosition> getSalePositions() {
-        return (this.salePositions == null) || (this.salePositions.isEmpty())
+    public List<Sale> getSales() {
+        return (this.sales == null) || (this.sales.isEmpty())
                 ? Collections.EMPTY_LIST
-                : Collections.unmodifiableList(this.salePositions);
+                : Collections.unmodifiableList(this.sales);
     }
 
-    /**
-     * Устанавливает список торговых позиций.
-     *
-     * @param salePositions Список торговых позиций .
-     */
-    public void setSalePositions(final List<SalePosition> salePositions) {
-        this.salePositions = salePositions;
+    public void setSales(final List<Sale> sales) {
+        this.sales = sales;
     }
 
-    /**
-     * Возвращает цену корзины - цена всех торговых позиций.
-     *
-     * @return Значение типа double - цена корзины.
-     */
     public double getPrice() {
         double sum = 0;
-        for (SalePosition salePosition : this.salePositions) {
-            sum += salePosition.getPrice();
+        for (Sale sale : this.sales) {
+            sum += sale.getPrice();
         }
         return sum;
     }
 
-    /**
-     * Возвращает размер корзины - количество товаров в корзине.
-     *
-     * @return Значение типа int - количество товаров в корзине.
-     */
     public int getSize() {
         int size = 0;
-        for (SalePosition salePosition : this.salePositions) {
-            size += salePosition.getNumber();
+        for (Sale sale : this.sales) {
+            size += sale.getNumber();
         }
         return size;
     }

@@ -22,7 +22,7 @@ public abstract class Model implements Serializable {
     private static final String DATE_PATTERN =
             "EEE, d MMM yyyy, HH:mm:ss";
 
-    private static final String TIME_ZONE = "GMT+3";
+    private static final String TIME_ZONE = "GMT+2";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

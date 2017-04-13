@@ -12,7 +12,6 @@ import ua.com.technozona.repository.CategoryRepository;
 import ua.com.technozona.repository.ProductRepository;
 import ua.com.technozona.service.interfaces.ProductService;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +40,6 @@ public final class ProductServiceImpl
         this.categoryRepository = categoryRepository;
     }
 
-    @Override
     @Transactional(readOnly = true)
     public Product getByUrl(final String url) throws WrongInformationException, BadRequestException {
         if (isBlank(url)) {
@@ -54,16 +52,6 @@ public final class ProductServiceImpl
         return product;
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Product getByArticle(final int article)
-            throws BadRequestException {
-        final Product product = this.productRepository.findByArticle(article);
-        if (product == null) {
-            throw new BadRequestException("Can't find product by article " + article + "!");
-        }
-        return product;
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -134,11 +122,6 @@ public final class ProductServiceImpl
         this.productRepository.deleteByUrl(url);
     }
 
-    @Override
-    @Transactional
-    public void removeByArticle(final int article) {
-        this.productRepository.deleteByArticle(article);
-    }
 
     @Override
     @Transactional
@@ -166,6 +149,7 @@ public final class ProductServiceImpl
         }
         this.productRepository.delete(productRepository.findByCategoryId(id));
     }
+
 
     private static List<Product> getShuffleSubList(
             final List<Product> products,

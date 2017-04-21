@@ -1,0 +1,7 @@
+tr .selected {
+    background-color: #00a7d0;
+}
+
+.btn-toolbar{
+    margin-bottom: 10px;
+}

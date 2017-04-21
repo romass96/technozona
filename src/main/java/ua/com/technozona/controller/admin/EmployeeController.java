@@ -5,13 +5,18 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ua.com.technozona.model.Admin;
 import ua.com.technozona.model.Category;
 import ua.com.technozona.model.Employee;
+import ua.com.technozona.model.Manager;
 import ua.com.technozona.service.interfaces.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -22,70 +27,104 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
+    AdminService adminService;
+
+    @Autowired
+    ManagerService managerService;
+
+    @Autowired
     EmployeeService employeeService;
 
 
-    @RequestMapping(value = {"/",""})
-    public ModelAndView view(){
-        ModelAndView model = new ModelAndView("admin/employees");
+    @RequestMapping(value = {"/admins"})
+    public ModelAndView viewAdmins(){
+        ModelAndView model = new ModelAndView("admin/admins");
         model.addObject("admin",getAdmin());
         return model;
     }
 
-    @RequestMapping(value = {"/getAll"}, method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public List<Employee> getAll(){
-        return employeeService.getAll();
+    @RequestMapping(value = {"/managers"})
+    public ModelAndView viewManagers(){
+        ModelAndView model = new ModelAndView("admin/managers");
+        model.addObject("admin",getAdmin());
+        return model;
     }
 
     @RequestMapping(value = {"/getAllAdmins"}, method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Employee> getAllAdmins(){
-        return employeeService.getAdministrators();
+    public List<Admin> getAllAdmins(){
+        return adminService.getAll();
     }
 
     @RequestMapping(value = {"/getAllManagers"}, method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Employee> getAllManagers(){
-        return employeeService.getManagers();
+    public List<Manager> getAllManagers(){
+        return managerService.getAll();
     }
 
-    @RequestMapping(value = {"/add"}, method = RequestMethod.POST,
+    @RequestMapping(value = {"/addAdmin"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Employee addEmployee(@RequestBody Employee employee){
-        employeeService.add(employee);
-        return employee;
+    public Admin addAdmin(@RequestBody Admin admin){
+            adminService.add(admin);
+            return admin;
     }
 
+    @RequestMapping(value = {"/addManager"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Manager addManager(@RequestBody Manager manager){
+        managerService.add(manager);
+        return manager;
+    }
 
-    @RequestMapping(value = {"/get/{id}"}, method = RequestMethod.GET,
+    @RequestMapping(value = {"/getAdmin/{id}"}, method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Employee getEMployee(@PathVariable("id") Long id){
-        return employeeService.get(id);
+    public Admin getAdmin(@PathVariable("id") Long id){
+        return adminService.get(id);
     }
 
-    @RequestMapping(value = {"/delete/{id}"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/getManager/{id}"}, method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Manager getManager(@PathVariable("id") Long id){
+        return managerService.get(id);
+    }
+
+    @RequestMapping(value = {"/deleteAdmin/{id}"}, method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public void deleteEmployee(@PathVariable("id") Long id){
-        employeeService.remove(id);
+    public void deleteAdmin(@PathVariable("id") Long id){
+        adminService.remove(id);
     }
 
-    @RequestMapping(value = {"/update"}, method = RequestMethod.POST,
+    @RequestMapping(value = {"/deleteManager/{id}"}, method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void deleteManager(@PathVariable("id") Long id){
+        managerService.remove(id);
+    }
+
+    @RequestMapping(value = {"/updateAdmin"}, method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Employee updateEmployee(@RequestBody Employee employee){
-        employeeService.update(employee);
-        return employee;
+    public Admin updateAdmin(@RequestBody Admin admin){
+        adminService.update(admin);
+        return admin;
+    }
+
+    @RequestMapping(value = {"/updateManager"}, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Manager updateManager(@RequestBody Manager manager){
+        managerService.update(manager);
+        return manager;
     }
 
 
-    private Employee getAdmin(){
-        return  (Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    private Admin getAdmin(){
+        return  (Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 

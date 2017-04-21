@@ -47,16 +47,8 @@ public final class Product extends Model {
     )
     private double price;
 
-    @OneToOne(
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL
-    )
-    @JoinColumn(
-            name = "photo_id",
-            referencedColumnName = "id"
-    )
-    @JsonBackReference
-    private Photo photo;
+    @Column(name = "photoUrl")
+    private String photoUrl;
 
 
 
@@ -68,14 +60,14 @@ public final class Product extends Model {
             final String title,
             final String url,
             final Category category,
-            final Photo photo,
+            final String photoUrl,
             final double price
     ) {
         super();
         this.title = title;
         this.url = url;
         this.category = category;
-        this.photo = photo;
+        this.photoUrl = photoUrl;
         this.price = price;
         this.parameters = "";
         this.description = "";
@@ -110,7 +102,7 @@ public final class Product extends Model {
             final String parameters,
             final String description,
             final Category category,
-            final Photo photo,
+            final String photoUrl,
             final double price
     ) {
         setTitle(title);
@@ -118,7 +110,7 @@ public final class Product extends Model {
         setParameters(parameters);
         setDescription(description);
         setCategory(category);
-        setPhoto(photo);
+        setPhotoUrl(photoUrl);
         setPrice(price);
     }
 
@@ -188,11 +180,11 @@ public final class Product extends Model {
         this.price = price > 0 ? price : 0;
     }
 
-    public Photo getPhoto() {
-        return photo;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public void setPhoto(Photo photo) {
-        this.photo = photo;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

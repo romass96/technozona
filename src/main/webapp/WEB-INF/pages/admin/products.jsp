@@ -1,20 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html lang="en">
+<%@ taglib prefix= "security" uri= "http://www.springframework.org/security/tags" %>
+<html lang="ru">
 <head>
+    <security:csrfMetaTags/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta name="author" content="Roma Babiy">
     <title>Панель администратора</title>
 
     <link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css"/>" rel="stylesheet">
-
     <link href="<c:url value="/resources/plugins/datatables/dataTables.bootstrap.css"/>" rel="stylesheet">
-
     <link href="<c:url value="/resources/css/font-awesome/font-awesome.css"/>" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link href="<c:url value="/resources/css/skins/skin-blue.min.css"/>" rel="stylesheet">

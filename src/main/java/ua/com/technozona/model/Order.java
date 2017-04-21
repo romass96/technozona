@@ -50,7 +50,7 @@ public final class Order extends Model {
             name = "manager_id",
             referencedColumnName = "id"
     )
-    private Employee manager;
+    private Manager manager;
 
     @OneToMany(
             fetch = FetchType.EAGER,
@@ -148,11 +148,11 @@ public final class Order extends Model {
         this.client = client;
     }
 
-    public Employee getManager() {
+    public Manager getManager() {
         return this.manager;
     }
 
-    public void setManager(final Employee manager) {
+    public void setManager(final Manager manager) {
         this.manager = manager;
     }
 

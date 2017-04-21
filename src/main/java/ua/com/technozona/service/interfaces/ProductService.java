@@ -1,5 +1,6 @@
 package ua.com.technozona.service.interfaces;
 
+import org.springframework.web.multipart.MultipartFile;
 import ua.com.technozona.model.Product;
 
 import java.util.List;
@@ -30,4 +31,10 @@ public interface ProductService extends MainService<Product> {
     void removeByCategoryUrl(String url);
 
     void removeByCategoryId(Long id);
+
+    void saveFile(MultipartFile photo);
+
+    String saveFile(MultipartFile photo, String fileName);
+
+    void deleteFile(String url);
 }

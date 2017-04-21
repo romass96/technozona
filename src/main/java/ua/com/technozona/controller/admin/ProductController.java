@@ -7,17 +7,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import ua.com.technozona.model.*;
 import ua.com.technozona.service.interfaces.CategoryService;
-import ua.com.technozona.service.interfaces.PhotoService;
 import ua.com.technozona.service.interfaces.ProductService;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -34,8 +27,6 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-    @Autowired
-    PhotoService photoService;
 
     @RequestMapping(value = {"/",""})
     public ModelAndView view(){
@@ -61,10 +52,7 @@ public class ProductController {
         Product product = new Product();
         product.initialize(title,url,parameters,description,category,price);
         productService.add(product);
-        Photo photo = new Photo();
-        photo.setTitle("Product"+product.getId());
-        photo.setPhotoLink(photoService.saveFile(file,photo.getTitle()));
-        product.setPhoto(photo);
+        product.setPhotoUrl(productService.saveFile(file,"Product"+product.getId()));
         productService.update(product);
         return product;
      }
@@ -92,8 +80,8 @@ public class ProductController {
     }
 
 
-    private Employee getAdmin(){
-        return  (Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    private Admin getAdmin(){
+        return  (Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 

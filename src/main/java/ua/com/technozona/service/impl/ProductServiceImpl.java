@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ua.com.technozona.exception.BadRequestException;
 import ua.com.technozona.exception.WrongInformationException;
 import ua.com.technozona.model.Category;
@@ -12,6 +13,11 @@ import ua.com.technozona.repository.CategoryRepository;
 import ua.com.technozona.repository.ProductRepository;
 import ua.com.technozona.service.interfaces.ProductService;
 
+import java.beans.Transient;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +34,8 @@ public final class ProductServiceImpl
     private final ProductRepository productRepository;
 
     private final CategoryRepository categoryRepository;
+
+    private static String PATH_TO_IMAGES = System.getenv("CATALINA_HOME")+"/TechnoZona/images/products/";
 
     @Autowired
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -166,5 +174,48 @@ public final class ProductServiceImpl
                 start,
                 end <= products.size() ? end : products.size()
         );
+    }
+
+    @Override
+    @Transactional
+    public void saveFile(final MultipartFile photo) {
+        if (photo != null && !photo.isEmpty()) {
+            final String filePath = "D:/TechnoZona/images/products/" + photo.getOriginalFilename();
+            try (OutputStream stream = new FileOutputStream(filePath)) {
+                stream.write(photo.getBytes());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    @Transient
+    public String saveFile(MultipartFile photo, String fileName) {
+        if (photo != null && !photo.isEmpty()) {
+            String extension = photo.getOriginalFilename().split("\\.")[1];
+            final String filePath = PATH_TO_IMAGES + fileName +'.'+ extension ;
+            try (OutputStream stream = new FileOutputStream(filePath)) {
+                stream.write(photo.getBytes());
+                return filePath;
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                return null;
+            }
+        } else {
+            return null;
+        }
+
+    }
+
+    @Override
+    @Transactional
+    public void deleteFile(final String url) {
+        if (isBlank(url)) {
+            final File file = new File(PATH_TO_IMAGES + url);
+            if (file.exists() && file.isFile()) {
+                file.delete();
+            }
+        }
     }
 }

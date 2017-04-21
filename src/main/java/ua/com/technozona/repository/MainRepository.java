@@ -21,10 +21,6 @@ import ua.com.technozona.model.Model;
  * @see OrderRepository
  * @see PhotoRepository
  * @see ProductRepository
- * @see RoleRepository
- * @see SalePositionRepository
- * @see StatusRepository
- * @see UserRepository
  * @see Model
  */
 public interface MainRepository<T extends Model, E extends Number> extends JpaRepository<T, E> {

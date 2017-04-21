@@ -20,7 +20,7 @@
         <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Регистрация</label>
         <div class="login-form">
             <div class="sign-in-htm">
-                <form method="POST">
+                <form method="POST" action="/admin_login">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="group">
                         <label for="email_signin" class="label">Email</label>

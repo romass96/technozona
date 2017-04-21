@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "ua.com.technozona.repository")
-@ComponentScan(basePackages = "ua.com.technozona.model")
+@ComponentScan(basePackages = {"ua.com.technozona.model","ua.com.technozona.service","ua.com.technozona.config"})
 public class RootConfig {
 
     /**

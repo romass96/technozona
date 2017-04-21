@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ua.com.technozona.model.Admin;
 import ua.com.technozona.model.Category;
 import ua.com.technozona.model.Employee;
+import ua.com.technozona.model.Manager;
 import ua.com.technozona.service.interfaces.CategoryService;
+import ua.com.technozona.service.interfaces.EmployeeService;
 
 import java.util.List;
 
@@ -24,10 +28,13 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
+    @Autowired
+    EmployeeService employeeService;
+
     @RequestMapping(value = {"/",""})
     public ModelAndView home(){
         ModelAndView model = new ModelAndView("admin/categories");
-        model.addObject("admin",getAdmin());
+        model.addObject("employee",getEmployee());
         return model;
     }
 
@@ -69,8 +76,13 @@ public class CategoryController {
     }
 
 
-    private Employee getAdmin(){
-        return  (Employee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    private Employee getEmployee(){
+        UserDetails currentEmployee = employeeService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (currentEmployee instanceof Admin){
+            return (Admin) currentEmployee;
+        } else {
+            return (Manager) currentEmployee;
+        }
     }
 
 }

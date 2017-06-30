@@ -24,7 +24,7 @@
     <div class="row main">
         <div class="main-login main-center">
             <h5>Регистрация</h5>
-            <form:form  method="post" action="/registerClient" modelAttribute="clientForm">
+            <form:form  method="post" action="/registerClient" modelAttribute="client">
 
                 <div class="form-group">
                     <label for="name" class="cols-sm-2 control-label">Ваше имя</label>
@@ -42,6 +42,16 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="email" id="email"  placeholder="Введите свой Email"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="cols-sm-2 control-label">Ваш телефон</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="phone" id="phone"  placeholder="Введите свой телефон"/>
                         </div>
                     </div>
                 </div>

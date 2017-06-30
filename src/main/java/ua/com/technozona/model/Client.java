@@ -18,8 +18,11 @@ public class Client extends Model implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "firstName", nullable = false)
+    private String firstName;
+
+    @Column(name = "lastName", nullable = false)
+    private String lastName;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -29,6 +32,9 @@ public class Client extends Model implements UserDetails {
 
     @Column(name = "phone", nullable = false)
     private String phone;
+
+    @Column(name = "enabled")
+    private boolean enabled;
 
     @Column(name = "vkontakte")
     private String vkontakte;
@@ -57,16 +63,19 @@ public class Client extends Model implements UserDetails {
 //    private List<Order> managerOrders = new ArrayList<>();
 
     public Client() {
-        this("", "", "");
+        this("", "", "","");
+        this.enabled = false;
     }
 
     public Client(
-            final String name,
+            final String firstName,
+            final String lastName,
             final String email,
             final String phone
     ) {
         super();
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.password = "";
@@ -77,7 +86,8 @@ public class Client extends Model implements UserDetails {
 
     @Override
     public String toString() {
-        return "Name: " + this.name
+        return "FirstName: " + this.firstName
+                + "\nLastName: " + this.lastName
                 + "\nEmail: " + this.email
                 + "\nPhone: " + this.phone;
     }
@@ -92,7 +102,7 @@ public class Client extends Model implements UserDetails {
      */
     @Override
     public String toEquals() {
-        return getName() + getEmail() + getPhone();
+        return  getEmail();
     }
 
     /**
@@ -140,7 +150,7 @@ public class Client extends Model implements UserDetails {
      */
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 
     /**
@@ -159,7 +169,8 @@ public class Client extends Model implements UserDetails {
     }
 
     public void initialize(
-            final String name,
+            final String firstName,
+            final String lastName,
             final String password,
             final String email,
             final String phone,
@@ -167,7 +178,8 @@ public class Client extends Model implements UserDetails {
             final String facebook,
             final String google
     ) {
-        setName(name);
+        setFirstName(firstName);
+        setLastName(lastName);
         setPassword(password);
         setEmail(email);
         setPhone(phone);
@@ -176,29 +188,22 @@ public class Client extends Model implements UserDetails {
         setGoogle(google);
     }
 
-    /**
-     * Возвращает имя пользователя.
-     *
-     * @return Значение типа {@link String} - имя пользователя.
-     */
-    public String getName() {
-        return this.name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    /**
-     * Устанавливает имя пользователя.
-     *
-     * @param name Имя пользователя.
-     */
-    public void setName(final String name) {
-        this.name = isNotBlank(name) ? name : "";
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    /**
-     * Возвращает пароль пользователя.
-     *
-     * @return Значение типа {@link String} - пароль пользователя.
-     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getPassword() {
         return this.password;
     }
@@ -284,5 +289,11 @@ public class Client extends Model implements UserDetails {
 //    public void setManagerOrders(final List<Order> managerOrders) {
 //        this.managerOrders = managerOrders;
 //    }
+
+
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }
 
